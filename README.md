@@ -58,3 +58,8 @@ chmod +x Miniconda3-py310_23.3.1-0-Linux-x86_64.sh
 source /root/miniconda3/etc/profile.d/conda.sh
 conda activate controlvideo
 ```
+
+## run
+```bash
+python main.py --control_type hed --video_path videos/car10.mp4 --source 'a car' --target 'a red car' --out_root outputs/ --max_step 300
+```
