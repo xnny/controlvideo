@@ -41,10 +41,20 @@ If you find this repository helpful, please cite as:
 ```
 This implementation is based on [Tune-A-Video](https://github.com/showlab/Tune-A-Video) and [Video-p2p](https://github.com/ShaoTengLiu/Video-P2P).
 
-colab
+# run in colab
 ## install conda
 ```bash
 wget https://repo.anaconda.com/miniconda/Miniconda3-py310_23.3.1-0-Linux-x86_64.sh
 chmod +x Miniconda3-py310_23.3.1-0-Linux-x86_64.sh
 ./Miniconda3-py310_23.3.1-0-Linux-x86_64.sh
+```
+## create environment
+```bash
+/root/miniconda3/condabin/conda env create -f environment.yml
+```
+
+## activate this environment
+```bash
+source /root/miniconda3/etc/profile.d/conda.sh
+conda activate controlvideo
 ```
