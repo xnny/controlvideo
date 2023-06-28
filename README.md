@@ -41,3 +41,10 @@ If you find this repository helpful, please cite as:
 ```
 This implementation is based on [Tune-A-Video](https://github.com/showlab/Tune-A-Video) and [Video-p2p](https://github.com/ShaoTengLiu/Video-P2P).
 
+colab
+## install conda
+```bash
+wget https://repo.anaconda.com/miniconda/Miniconda3-py310_23.3.1-0-Linux-x86_64.sh
+chmod +x Miniconda3-py310_23.3.1-0-Linux-x86_64.sh
+./Miniconda3-py310_23.3.1-0-Linux-x86_64.sh
+```
