@@ -1,6 +1,6 @@
-pretrained_model_path: "./stable-diffusion-v1-5"
-output_dir: ""
-pretrained_controlnet_path: "./sd-controlnet-hed"
+pretrained_model_path: "runwayml/stable-diffusion-v1-5"
+output_dir: "/content/sample_data"
+pretrained_controlnet_path: "lllyasviel/sd-controlnet-hedd"
 
 control_config:
   type: "hed"
