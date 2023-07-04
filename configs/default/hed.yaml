@@ -9,16 +9,16 @@ control_config:
 train_data:
   video_path: ""
   prompt: ""
-  n_sample_frames: 8
+  n_sample_frames: 16
   width: 512
   height: 512
   sample_start_idx: 0
-  sample_frame_rate: 5
+  sample_frame_rate: 1
 
 validation_data:
   prompts:
     - ""
-  video_length: 8
+  video_length: 16
   width: 512
   height: 512
   guidance_scale: 12
