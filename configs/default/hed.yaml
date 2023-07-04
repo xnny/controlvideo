@@ -9,18 +9,18 @@ control_config:
 train_data:
   video_path: ""
   prompt: ""
-  n_sample_frames: 8
-  width: 512
-  height: 512
+  n_sample_frames: 32
+  width: 256
+  height: 256
   sample_start_idx: 0
   sample_frame_rate: 1
 
 validation_data:
   prompts:
     - ""
-  video_length: 8
-  width: 512
-  height: 512
+  video_length: 32
+  width: 256
+  height: 256
   guidance_scale: 12
   num_steps: 50
   start: "inversion"
