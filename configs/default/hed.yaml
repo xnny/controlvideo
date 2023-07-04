@@ -18,7 +18,7 @@ train_data:
 validation_data:
   prompts:
     - ""
-  video_length: 8
+  video_length: 16
   width: 512
   height: 512
   guidance_scale: 12
