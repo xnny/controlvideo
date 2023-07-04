@@ -64,13 +64,6 @@ if __name__ == "__main__":
     para.train_data.prompt = args.source
     para.validation_data.prompts = [args.target]
     para.max_train_steps = args.max_step
-    para.validation_steps = para.max_train_steps # the validation_steps are set to max_train_steps for saving time
+    para.validation_steps = para.max_train_steps  # the validation_steps are set to max_train_steps for saving time
 
     main(**para)
-
-
-
-
-
-
-

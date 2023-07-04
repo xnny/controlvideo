@@ -27,33 +27,34 @@ from libs.controlnet3d import ControlNetModel
 
 logger = get_logger(__name__)
 
+
 def main(
-    pretrained_model_path: str,
-    output_dir: str,
-    pretrained_controlnet_path: str,
-    train_data: Dict,
-    validation_data: Dict,
-    control_config: Dict,
-    validation_steps: int = 100,
-    trainable_modules: Tuple[str] = (
-        "attn1.to_q",
-    ),
-    train_batch_size: int = 1,
-    max_train_steps: int = 500,
-    learning_rate: float = 3e-5,
-    scale_lr: bool = False,
-    lr_scheduler: str = "constant",
-    lr_warmup_steps: int = 0,
-    adam_beta1: float = 0.9,
-    adam_beta2: float = 0.999,
-    adam_weight_decay: float = 1e-2,
-    adam_epsilon: float = 1e-08,
-    max_grad_norm: float = 1.0,
-    gradient_accumulation_steps: int = 1,
-    gradient_checkpointing: bool = True,
-    mixed_precision: Optional[str] = "fp16",
-    enable_xformers_memory_efficient_attention: bool = True,
-    seed: Optional[int] = None
+        pretrained_model_path: str,
+        output_dir: str,
+        pretrained_controlnet_path: str,
+        train_data: Dict,
+        validation_data: Dict,
+        control_config: Dict,
+        validation_steps: int = 100,
+        trainable_modules: Tuple[str] = (
+                "attn1.to_q",
+        ),
+        train_batch_size: int = 1,
+        max_train_steps: int = 500,
+        learning_rate: float = 3e-5,
+        scale_lr: bool = False,
+        lr_scheduler: str = "constant",
+        lr_warmup_steps: int = 0,
+        adam_beta1: float = 0.9,
+        adam_beta2: float = 0.999,
+        adam_weight_decay: float = 1e-2,
+        adam_epsilon: float = 1e-08,
+        max_grad_norm: float = 1.0,
+        gradient_accumulation_steps: int = 1,
+        gradient_checkpointing: bool = True,
+        mixed_precision: Optional[str] = "fp16",
+        enable_xformers_memory_efficient_attention: bool = True,
+        seed: Optional[int] = None
 ):
     if seed is not None:
         set_seed(seed)
@@ -108,7 +109,7 @@ def main(
 
     if scale_lr:
         learning_rate = (
-            learning_rate * gradient_accumulation_steps * train_batch_size * accelerator.num_processes
+                learning_rate * gradient_accumulation_steps * train_batch_size * accelerator.num_processes
         )
 
     optimizer_cls = torch.optim.AdamW
@@ -142,7 +143,8 @@ def main(
     # prepare dataloader
     train_dataset = VideoDataset(**train_data)
     train_dataset.prompt_ids = tokenizer(
-        train_dataset.prompt, max_length=tokenizer.model_max_length, padding="max_length", truncation=True, return_tensors="pt"
+        train_dataset.prompt, max_length=tokenizer.model_max_length, padding="max_length", truncation=True,
+        return_tensors="pt"
     ).input_ids[0]
     train_dataloader = torch.utils.data.DataLoader(
         train_dataset, batch_size=train_batch_size
@@ -189,16 +191,17 @@ def main(
     # Since we only have one video, we first compute its control before training to save time
     for step, batch in enumerate(train_dataloader):
 
-        #only support 1 batchsize
+        # only support 1 batchsize
         assert batch["control"].shape[0] == 1
 
-        control_ = batch["control"].squeeze() #[f h w c] in {0,1,……,255}
+        control_ = batch["control"].squeeze()  # [f h w c] in {0,1,……,255}
         control = []
 
         # compute control for each frame
         for i in control_:
             if control_config.type == 'canny':
-                detected_map = apply_control(i.cpu().numpy(), control_config.low_threshold, control_config.high_threshold)
+                detected_map = apply_control(i.cpu().numpy(), control_config.low_threshold,
+                                             control_config.high_threshold)
             elif control_config.type == 'openpose' or control_config.type == 'depth':
                 detected_map, _ = apply_control(i.cpu().numpy())
             elif control_config.type == 'hed' or control_config.type == 'seg':
@@ -210,7 +213,8 @@ def main(
             elif control_config.type == 'normal':
                 _, detected_map = apply_control(i.cpu().numpy(), bg_th=control_config.bg_threshold)
             elif control_config.type == 'mlsd':
-                detected_map = apply_control(i.cpu().numpy(), control_config.value_threshold, control_config.distance_threshold)
+                detected_map = apply_control(i.cpu().numpy(), control_config.value_threshold,
+                                             control_config.distance_threshold)
             else:
                 raise ValueError(control_config.type)
             control.append(HWC3(detected_map))
@@ -219,7 +223,7 @@ def main(
         control = np.stack(control)
         control = np.array(control).astype(np.float32) / 255.0
         control = torch.from_numpy(control).to(accelerator.device)
-        control = control.unsqueeze(0) #[f h w c] -> [b f h w c ]
+        control = control.unsqueeze(0)  # [f h w c] -> [b f h w c ]
         control = rearrange(control, "b f h w c -> b c f h w")
         control = control.to(weight_dtype)
 
@@ -306,7 +310,8 @@ def main(
                         generator = torch.Generator(device=latents.device)
                         generator.manual_seed(seed)
 
-                        samples = VideoGen(validation_data, generator, latents, validation_pipeline, ddim_inv_scheduler, train_data, control, weight_dtype, control_config.control_scale, samples)
+                        samples = VideoGen(validation_data, generator, latents, validation_pipeline, ddim_inv_scheduler,
+                                           train_data, control, weight_dtype, control_config.control_scale, samples)
                         sample_save = samples[-1]
                         samples = torch.concat(samples)
                         save_path = f"{output_dir_log}/{global_step}.mp4"
@@ -328,5 +333,3 @@ def main(
         save_tensor_images_folder(sample_save, save_path)
 
     accelerator.end_training()
-
-
