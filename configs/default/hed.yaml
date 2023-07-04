@@ -10,8 +10,8 @@ train_data:
   video_path: ""
   prompt: ""
   n_sample_frames: 64
-  width: 512
-  height: 512
+  width: 256
+  height: 256
   sample_start_idx: 0
   sample_frame_rate: 1
 
