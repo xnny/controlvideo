@@ -9,7 +9,7 @@ control_config:
 train_data:
   video_path: ""
   prompt: ""
-  n_sample_frames: 64
+  n_sample_frames: 32
   width: 256
   height: 256
   sample_start_idx: 0
