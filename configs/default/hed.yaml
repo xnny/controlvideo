@@ -10,8 +10,8 @@ train_data:
   video_path: ""
   prompt: ""
   n_sample_frames: 32
-  width: 256
-  height: 256
+  width: 516
+  height: 516
   sample_start_idx: 0
   sample_frame_rate: 1
 
@@ -19,8 +19,8 @@ validation_data:
   prompts:
     - ""
   video_length: 32
-  width: 256
-  height: 256
+  width: 516
+  height: 516
   guidance_scale: 12
   num_steps: 50
   start: "inversion"
