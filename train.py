@@ -328,6 +328,9 @@ def main(
         save_path = f"{output_dir}/results/control"
         save_tensor_images_folder(control_save, save_path)
 
+        save_path = f"{output_dir_log}/d2.mp4"
+        save_videos_grid(control_save, save_path)
+
         print("save translated video")
         save_path = f"{output_dir}/results/controlvideo"
         save_tensor_images_folder(sample_save, save_path)
