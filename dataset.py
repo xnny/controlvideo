@@ -39,6 +39,7 @@ class VideoDataset(Dataset):
         if self.video_path.endswith('mp4'):
             vr = decord.VideoReader(self.video_path, width=self.width, height=self.height)
             sample_frame_rate = len(vr)//self.n_sample_frames
+            print(('sample-frame-rate', sample_frame_rate))
             sample_index = list(range(self.sample_start_idx, len(vr), sample_frame_rate))[:self.n_sample_frames]
             video = vr.get_batch(sample_index)
             control = video
